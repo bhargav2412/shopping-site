@@ -13,9 +13,11 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 
-class CartController extends Controller {
+class CartController extends Controller
+{
 
-    public function AddToCart(Request $request, $id) {
+    public function AddToCart(Request $request, $id)
+    {
 
         if (Session::has('coupon')) {
             Session::forget('coupon');
@@ -54,7 +56,8 @@ class CartController extends Controller {
     } // end method
 
     // Mini Cart Section
-    public function AddMiniCart() {
+    public function AddMiniCart()
+    {
 
         $carts = Cart::content();
         $cartQty = Cart::count();
@@ -70,7 +73,8 @@ class CartController extends Controller {
 
 
     // remove mini cart 
-    public function RemoveMiniCart($rowId) {
+    public function RemoveMiniCart($rowId)
+    {
         Cart::remove($rowId);
         return response()->json(['success' => 'Product Remove from Cart']);
     } // end mehtod 
@@ -78,7 +82,8 @@ class CartController extends Controller {
 
     // add to wishlist mehtod 
 
-    public function AddToWishlist(Request $request, $product_id) {
+    public function AddToWishlist(Request $request, $product_id)
+    {
         if (Auth::check()) {
 
             $exists = Wishlist::where('user_id', Auth::id())->where('product_id', $product_id)->first();
@@ -99,7 +104,8 @@ class CartController extends Controller {
     }
 
     // coupon apply mehtod 
-    public function CouponApply(Request $request) {
+    public function CouponApply(Request $request)
+    {
         $coupon = Coupon::where('coupon_name', $request->coupon_name)->where('coupon_validity', '>=', Carbon::now()->format('Y-m-d'))->first();
 
         if ($coupon) {
@@ -123,7 +129,8 @@ class CartController extends Controller {
     }
 
 
-    public function CouponCalculation() {
+    public function CouponCalculation()
+    {
         if (Session::has('coupon')) {
             return response()->json(array(
                 'subtotal' => Cart::total(),
@@ -140,13 +147,15 @@ class CartController extends Controller {
     } // end method 
 
     // Remove Coupon 
-    public function CouponRemove() {
+    public function CouponRemove()
+    {
         Session::forget('coupon');
         return response()->json(['success' => 'Coupon Remove Successfully']);
     }
 
     // Checkout Method 
-    public function CheckoutCreate() {
+    public function CheckoutCreate()
+    {
 
         if (Auth::check()) {
             if (Cart::total() > 0) {

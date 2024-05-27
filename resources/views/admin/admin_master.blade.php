@@ -80,61 +80,32 @@
     <script src="{{ asset('backend/js/toastr.min.js') }}"></script>
 
     <script>
-    @if(Session::has('message'))
-    var type = "{{ Session::get('alert-type', 'info') }}"
-    switch (type) {
-        case 'info':
-            toastr.info(" {{ Session::get('message') }}");
-            break;
+        @if(Session::has('message'))
+        var type = "{{ Session::get('alert-type', 'info') }}"
+        switch (type) {
+            case 'info':
+                toastr.info(" {{ Session::get('message') }}");
+                break;
 
-        case 'success':
-            toastr.success(" {{ Session::get('message') }}");
-            break;
+            case 'success':
+                toastr.success(" {{ Session::get('message') }}");
+                break;
 
-        case 'warning':
-            toastr.warning(" {{ Session::get('message') }}");
-            break;
+            case 'warning':
+                toastr.warning(" {{ Session::get('message') }}");
+                break;
 
-        case 'error':
-            toastr.error(" {{ Session::get('message') }}");
-            break;
-    }
-    @endif
+            case 'error':
+                toastr.error(" {{ Session::get('message') }}");
+                break;
+        }
+        @endif
     </script>
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 
-    <script>
-    $(function() {
-        $(document).on('click', '#delete', function(e) {
-            e.preventDefault();
-            var link = $(this).attr("href");
+    <script src="{{ asset('backend/js/code.js') }}"></script>
 
-
-            Swal.fire({
-                title: 'Are you sure?',
-                text: "Delete This Data?",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes, delete it!'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    window.location.href = link
-                    Swal.fire(
-                        'Deleted!',
-                        'Your file has been deleted.',
-                        'success'
-                    )
-                }
-            })
-
-
-        });
-
-    });
-    </script>
 </body>
 
 </html>

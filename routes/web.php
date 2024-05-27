@@ -5,6 +5,7 @@ use App\Http\Controllers\Backend\AdminProfileController;
 use App\Http\Controllers\Backend\BrandController;
 use App\Http\Controllers\Backend\CategoryController;
 use App\Http\Controllers\Backend\CouponController;
+use App\Http\Controllers\Backend\OrderController;
 use App\Http\Controllers\Backend\ProductController;
 use App\Http\Controllers\Backend\ShippingAreaController;
 use App\Http\Controllers\Backend\SliderController;
@@ -315,7 +316,29 @@ Route::get('/state-get/ajax/{district_id}', [CheckoutController::class, 'StateGe
 Route::post('/checkout/store', [CheckoutController::class, 'CheckoutStore'])->name('checkout.store');
 
 
+// Admin Order All Routes 
 
+Route::prefix('orders')->group(function () {
+
+    Route::get('/pending/orders', [OrderController::class, 'PendingOrders'])->name('pending-orders');
+
+    Route::get('/pending/orders/details/{order_id}', [OrderController::class, 'PendingOrdersDetails'])->name('pending.order.details');
+
+    Route::get('/confirmed/orders', [OrderController::class, 'ConfirmedOrders'])->name('confirmed-orders');
+
+    Route::get('/processing/orders', [OrderController::class, 'ProcessingOrders'])->name('processing-orders');
+
+    Route::get('/picked/orders', [OrderController::class, 'PickedOrders'])->name('picked-orders');
+
+    Route::get('/shipped/orders', [OrderController::class, 'ShippedOrders'])->name('shipped-orders');
+
+    Route::get('/delivered/orders', [OrderController::class, 'DeliveredOrders'])->name('delivered-orders');
+
+    Route::get('/cancel/orders', [OrderController::class, 'CancelOrders'])->name('cancel-orders');
+
+    // Update Status 
+    Route::get('/pending/confirm/{order_id}', [OrderController::class, 'PendingToConfirm'])->name('pending-confirm');
+});
 
 
 require __DIR__ . '/auth.php';
