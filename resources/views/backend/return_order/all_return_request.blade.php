@@ -18,7 +18,7 @@
 
                 <div class="box">
                     <div class="box-header with-border">
-                        <h3 class="box-title">Pending Orders List</h3>
+                        <h3 class="box-title">All Return Orders List</h3>
                     </div>
                     <!-- /.box-header -->
                     <div class="box-body">
@@ -43,11 +43,17 @@
                                         <td> ${{ $item->amount }} </td>
 
                                         <td> {{ $item->payment_method }} </td>
-                                        <td> <span class="badge badge-pill badge-primary">{{ $item->status }} </span> </td>
+                                        <td>
+                                            @if($item->return_order == 1)
+                                            <span class="badge badge-pill badge-primary">Pending </span>
+                                            @elseif($item->return_order == 2)
+                                            <span class="badge badge-pill badge-success">Success </span>
+                                            @endif
+
+                                        </td>
 
                                         <td width="25%">
-                                            <a href="{{ route('pending.order.details',$item->id) }}" class="btn btn-info" title="Edit Data"><i class="fa fa-eye"></i> </a>
-
+                                            <span class="badge badge-success">Return Success </span>
                                         </td>
 
                                     </tr>

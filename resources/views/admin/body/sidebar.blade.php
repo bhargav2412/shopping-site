@@ -30,6 +30,7 @@ $route = Route::current()->getName();
                 </a>
             </li>
 
+
             <li class="treeview">
                 <a href="#">
                     <i data-feather="message-circle"></i>
@@ -129,6 +130,40 @@ $route = Route::current()->getName();
                     <li class="{{ $route == 'manage-state' ? 'active' : '' }}"><a href="{{ route('manage-state') }}"><i class="ti-more"></i>Ship State</a></li>
                 </ul>
             </li>
+
+            <li class="treeview {{ ($prefix == '/return')?'active':'' }}  ">
+                <a href="#">
+                    <i data-feather="file"></i>
+                    <span>Return Order</span>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-right pull-right"></i>
+                    </span>
+                </a>
+                <ul class="treeview-menu">
+                    <li class="{{ ($route == 'return.request')? 'active':'' }}"><a href="{{ route('return.request') }}"><i class="ti-more"></i>Return Request</a></li>
+
+                    <li class="{{ ($route == 'all.request')? 'active':'' }}"><a href="{{ route('all.request') }}"><i class="ti-more"></i>All Request</a></li>
+
+
+                </ul>
+            </li>
+
+            <li class="treeview {{ ($prefix == '/adminuserrole')?'active':'' }}  ">
+                <a href="#">
+                    <i data-feather="file"></i>
+                    <span>Admin User Role </span>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-right pull-right"></i>
+                    </span>
+                </a>
+                <ul class="treeview-menu">
+                    <li class="{{ ($route == 'all.admin.user')? 'active':'' }}"><a href="{{ route('all.admin.user') }}"><i class="ti-more"></i>All Admin User </a></li>
+
+
+                </ul>
+            </li>
+
+
 
             <li class="header nav-small-cap">User Interface</li>
 

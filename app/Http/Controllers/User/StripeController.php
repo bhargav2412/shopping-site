@@ -17,9 +17,11 @@ use Illuminate\Support\Facades\Mail;
 use Stripe\Customer;
 use Stripe\PaymentMethod;
 
-class StripeController extends Controller {
+class StripeController extends Controller
+{
 
-    public function StripeOrder(Request $request) {
+    public function StripeOrder(Request $request)
+    {
 
         $total = (int)str_replace(',', '', Cart::total());
 
@@ -74,7 +76,7 @@ class StripeController extends Controller {
                 'order_date' => Carbon::now()->format('d F Y'),
                 'order_month' => Carbon::now()->format('F'),
                 'order_year' => Carbon::now()->format('Y'),
-                'status' => 'Pending',
+                'status' => 'pending',
                 'created_at' => Carbon::now(),
             ]
         );

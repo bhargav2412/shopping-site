@@ -18,7 +18,7 @@
 
                 <div class="box">
                     <div class="box-header with-border">
-                        <h3 class="box-title">Pending Orders List</h3>
+                        <h3 class="box-title">Total Admin User </h3>
                     </div>
                     <!-- /.box-header -->
                     <div class="box-body">
@@ -26,28 +26,29 @@
                             <table id="example1" class="table table-bordered table-striped">
                                 <thead>
                                     <tr>
-                                        <th>Date </th>
-                                        <th>Invoice </th>
-                                        <th>Amount </th>
-                                        <th>Payment </th>
-                                        <th>Status </th>
+                                        <th>Image </th>
+                                        <th>Name </th>
+                                        <th>Email </th>
+                                        <th>Access </th>
                                         <th>Action</th>
 
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach($orders as $item)
+                                    @foreach($adminuser as $item)
                                     <tr>
-                                        <td> {{ $item->order_date }} </td>
-                                        <td> {{ $item->invoice_no }} </td>
-                                        <td> ${{ $item->amount }} </td>
+                                        <td> <img src="{{ asset($item->profile_photo_path) }}"> </td>
+                                        <td> {{ $item->name }} </td>
+                                        <td> ${{ $item->email  }} </td>
 
-                                        <td> {{ $item->payment_method }} </td>
-                                        <td> <span class="badge badge-pill badge-primary">{{ $item->status }} </span> </td>
+                                        <td> </td>
+
 
                                         <td width="25%">
                                             <a href="{{ route('pending.order.details',$item->id) }}" class="btn btn-info" title="Edit Data"><i class="fa fa-eye"></i> </a>
 
+                                            <a target="_blank" href="{{ route('invoice.download',$item->id) }}" class="btn btn-danger" title="Invoice Download">
+                                                <i class="fa fa-download"></i></a>
                                         </td>
 
                                     </tr>

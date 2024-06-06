@@ -2,11 +2,13 @@
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Backend\AdminProfileController;
+use App\Http\Controllers\Backend\AdminUserController;
 use App\Http\Controllers\Backend\BrandController;
 use App\Http\Controllers\Backend\CategoryController;
 use App\Http\Controllers\Backend\CouponController;
 use App\Http\Controllers\Backend\OrderController;
 use App\Http\Controllers\Backend\ProductController;
+use App\Http\Controllers\Backend\ReturnController;
 use App\Http\Controllers\Backend\ShippingAreaController;
 use App\Http\Controllers\Backend\SliderController;
 use App\Http\Controllers\Backend\SubCategoryController;
@@ -228,6 +230,8 @@ Route::group(
         Route::get('/order_details/{order_id}', [AllUserController::class, 'OrderDetails']);
 
         Route::get('/invoice_download/{order_id}', [AllUserController::class, 'InvoiceDownload']);
+
+        Route::get('/cancel/orders', [AllUserController::class, 'CancelOrders'])->name('cancel.orders');
     }
 );
 
@@ -338,7 +342,41 @@ Route::prefix('orders')->group(function () {
 
     // Update Status 
     Route::get('/pending/confirm/{order_id}', [OrderController::class, 'PendingToConfirm'])->name('pending-confirm');
+
+    Route::get('/confirm/processing/{order_id}', [OrderController::class, 'ConfirmToProcessing'])->name('confirm.processing');
+
+    Route::get('/processing/picked/{order_id}', [OrderController::class, 'ProcessingToPicked'])->name('processing.picked');
+
+    Route::get('/picked/shipped/{order_id}', [OrderController::class, 'PickedToShipped'])->name('picked.shipped');
+
+    Route::get('/shipped/delivered/{order_id}', [OrderController::class, 'ShippedToDelivered'])->name('shipped.delivered');
+
+    Route::get('/shipped/cancelled/{order_id}', [OrderController::class, 'ShippedToCancelled'])->name('shipped.cancelled');
+
+    Route::get('/invoice/download/{order_id}', [OrderController::class, 'AdminInvoiceDownload'])->name('invoice.download');
+
+    Route::post('/return/order/{order_id}', [AllUserController::class, 'ReturnOrder'])->name('return.order');
+
+    Route::get('/return/order/list', [AllUserController::class, 'ReturnOrderList'])->name('return.order.list');
 });
 
+
+// Admin Return Order Routes 
+Route::prefix('return')->group(function () {
+
+    Route::get('/admin/request', [ReturnController::class, 'ReturnRequest'])->name('return.request');
+
+    Route::get('/admin/return/approve/{order_id}', [ReturnController::class, 'ReturnRequestApprove'])->name('return.approve');
+
+    Route::get('/admin/all/request', [ReturnController::class, 'ReturnAllRequest'])->name('all.request');
+});
+
+
+
+// Admin User Role Routes 
+Route::prefix('adminuserrole')->group(function () {
+
+    Route::get('/all', [AdminUserController::class, 'AllAdminRole'])->name('all.admin.user');
+});
 
 require __DIR__ . '/auth.php';
