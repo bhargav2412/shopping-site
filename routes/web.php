@@ -232,6 +232,9 @@ Route::group(
         Route::get('/invoice_download/{order_id}', [AllUserController::class, 'InvoiceDownload']);
 
         Route::get('/cancel/orders', [AllUserController::class, 'CancelOrders'])->name('cancel.orders');
+
+        /// Order Traking Route 
+        Route::post('/order/tracking', [AllUserController::class, 'OrderTraking'])->name('order.tracking');
     }
 );
 
@@ -371,12 +374,24 @@ Route::prefix('return')->group(function () {
     Route::get('/admin/all/request', [ReturnController::class, 'ReturnAllRequest'])->name('all.request');
 });
 
-
-
 // Admin User Role Routes 
 Route::prefix('adminuserrole')->group(function () {
-
     Route::get('/all', [AdminUserController::class, 'AllAdminRole'])->name('all.admin.user');
+
+    Route::get('/add', [AdminUserController::class, 'AddAdminRole'])->name('add.admin');
+
+    Route::post('/store', [AdminUserController::class, 'StoreAdminRole'])->name('admin.user.store');
+
+    Route::get('/edit/{id}', [AdminUserController::class, 'EditAdminRole'])->name('edit.admin.user');
+
+    Route::post('/update', [AdminUserController::class, 'UpdateAdminRole'])->name('admin.user.update');
+
+    Route::get('/delete/{id}', [AdminUserController::class, 'DeleteAdminRole'])->name('delete.admin.user');
 });
+
+/// Product Search Route 
+Route::post('/search', [UserController::class, 'ProductSearch'])->name('product.search');
+
+
 
 require __DIR__ . '/auth.php';

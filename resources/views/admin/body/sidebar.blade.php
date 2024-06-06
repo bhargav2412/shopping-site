@@ -30,7 +30,26 @@ $route = Route::current()->getName();
                 </a>
             </li>
 
+            @php
+            $brand = (auth()->guard('admin')->user()->brand == 1);
+            $category = (auth()->guard('admin')->user()->category == 1);
+            $product = (auth()->guard('admin')->user()->product == 1);
+            $slider = (auth()->guard('admin')->user()->slider == 1);
+            $coupons = (auth()->guard('admin')->user()->coupons == 1);
+            $shipping = (auth()->guard('admin')->user()->shipping == 1);
+            $blog = (auth()->guard('admin')->user()->blog == 1);
+            $setting = (auth()->guard('admin')->user()->setting == 1);
+            $returnorder = (auth()->guard('admin')->user()->returnorder == 1);
+            $review = (auth()->guard('admin')->user()->review == 1);
+            $orders = (auth()->guard('admin')->user()->orders == 1);
+            $stock = (auth()->guard('admin')->user()->stock == 1);
+            $reports = (auth()->guard('admin')->user()->reports == 1);
+            $alluser = (auth()->guard('admin')->user()->alluser == 1);
+            $adminuserrole = (auth()->guard('admin')->user()->adminuserrole == 1);
+            @endphp
 
+
+            @if($brand == true)
             <li class="treeview">
                 <a href="#">
                     <i data-feather="message-circle"></i>
@@ -45,7 +64,9 @@ $route = Route::current()->getName();
                     </li>
                 </ul>
             </li>
+            @endif
 
+            @if($category == true)
             <li class="treeview {{ $prefix == '/category' ? 'active' : '' }}">
                 <a href="#">
                     <i data-feather="mail"></i> <span>Category</span>
@@ -57,19 +78,17 @@ $route = Route::current()->getName();
                     <li class="{{ $route == 'all.category' ? 'active' : '' }}">
                         <a href="{{ route('all.category') }}"><i class="ti-more"></i>All Category</a>
                     </li>
-
                     <li class="{{ $route == 'all.subcategory' ? 'active' : '' }}">
                         <a href="{{ route('all.subcategory') }}"><i class="ti-more"></i>All SubCategory</a>
                     </li>
 
                     <li class="{{ $route == 'all.subsubcategory' ? 'active' : '' }}"><a href="{{ route('all.subsubcategory') }}"><i class="ti-more"></i>All Sub->SubCategory</a>
                     </li>
-
-
                 </ul>
             </li>
+            @endif
 
-
+            @if($product == true)
             <li class="treeview">
                 <a href="#">
                     <i data-feather="file"></i>
@@ -85,8 +104,9 @@ $route = Route::current()->getName();
                     <li class="{{ $route == 'manage.product' ? 'active' : '' }}"><a href="{{ route('manage.product') }}"><i class="ti-more"></i>Manage Products</a></li>
                 </ul>
             </li>
+            @endif
 
-
+            @if($slider == true)
             <li class="treeview {{ $prefix == '/slider' ? 'active' : '' }}  ">
                 <a href="#">
                     <i data-feather="file"></i>
@@ -99,7 +119,9 @@ $route = Route::current()->getName();
                     <li class="{{ $route == 'manage.slider' ? 'active' : '' }}"><a href="{{ route('manage.slider') }}"><i class="ti-more"></i>Manage Slider</a></li>
                 </ul>
             </li>
+            @endif
 
+            @if($coupons == true)
             <li class="treeview {{ $prefix == '/coupons' ? 'active' : '' }}  ">
                 <a href="#">
                     <i data-feather="file"></i>
@@ -112,8 +134,9 @@ $route = Route::current()->getName();
                     <li class="{{ $route == 'manage-coupon' ? 'active' : '' }}"><a href="{{ route('manage-coupon') }}"><i class="ti-more"></i>Manage Coupon</a></li>
                 </ul>
             </li>
+            @endif
 
-
+            @if($shipping == true)
             <li class="treeview {{ $prefix == '/shipping' ? 'active' : '' }}  ">
                 <a href="#">
                     <i data-feather="file"></i>
@@ -130,7 +153,9 @@ $route = Route::current()->getName();
                     <li class="{{ $route == 'manage-state' ? 'active' : '' }}"><a href="{{ route('manage-state') }}"><i class="ti-more"></i>Ship State</a></li>
                 </ul>
             </li>
+            @endif
 
+            @if($returnorder == true)
             <li class="treeview {{ ($prefix == '/return')?'active':'' }}  ">
                 <a href="#">
                     <i data-feather="file"></i>
@@ -147,7 +172,9 @@ $route = Route::current()->getName();
 
                 </ul>
             </li>
+            @endif
 
+            @if($adminuserrole == true)
             <li class="treeview {{ ($prefix == '/adminuserrole')?'active':'' }}  ">
                 <a href="#">
                     <i data-feather="file"></i>
@@ -162,11 +189,13 @@ $route = Route::current()->getName();
 
                 </ul>
             </li>
+            @endif
 
 
 
             <li class="header nav-small-cap">User Interface</li>
 
+            @if($orders == true)
             <li class="treeview {{ ($prefix == '/orders')?'active':'' }}  ">
                 <a href="#">
                     <i data-feather="file"></i>
@@ -191,21 +220,9 @@ $route = Route::current()->getName();
                     <li class="{{ ($route == 'cancel-orders')? 'active':'' }}"><a href="{{ route('cancel-orders') }}"><i class="ti-more"></i> Cancel Orders</a></li>
                 </ul>
             </li>
+            @endif
 
-            <li class="treeview">
-                <a href="#">
-                    <i data-feather="credit-card"></i>
-                    <span>Cards</span>
-                    <span class="pull-right-container">
-                        <i class="fa fa-angle-right pull-right"></i>
-                    </span>
-                </a>
-                <ul class="treeview-menu">
-                    <li><a href="card_advanced.html"><i class="ti-more"></i>Advanced Cards</a></li>
-                    <li><a href="card_basic.html"><i class="ti-more"></i>Basic Cards</a></li>
-                    <li><a href="card_color.html"><i class="ti-more"></i>Cards Color</a></li>
-                </ul>
-            </li>
+
         </ul>
     </section>
 

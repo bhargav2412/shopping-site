@@ -5,20 +5,23 @@ namespace App\Http\Controllers\Backend;
 use App\Http\Controllers\Controller;
 use App\Models\Admin;
 use Illuminate\Http\Request;
-use Carbon\Carbon; 
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
 
 class AdminProfileController extends Controller
 {
     public function AdminProfile()
     {
-        $AdminData = Admin::find(1);
+        $id = Auth::user()->id;
+        $AdminData = Admin::find($id);
         return view('admin.admin_profile', compact('AdminData'));
     } // end mehtod 
 
     public function AdminProfileEdit()
     {
-        $editAdminData = Admin::find(1);
+        $id = Auth::user()->id;
+        $editAdminData = Admin::find($id);
         return view('admin.admin_profile_edit', compact('editAdminData'));
     } // end mehtod 
 
@@ -32,16 +35,17 @@ class AdminProfileController extends Controller
             ]
         );
 
-        $model = Admin::find(1);
+        $id = Auth::user()->id;
+        $model = Admin::find($id);
         $model->name = $request->name;
         $model->email = $request->email;
         $model->created_at = Carbon::now();
 
         if ($request->file('profile_photo_path')) {
             $file = $request->file('profile_photo_path');
-            @unlink(public_path('upload/admin_image/' . $model->profile_photo_path));
+            @unlink(public_path('upload/admin_images/' . $model->profile_photo_path));
             $fileName = date('YmdHi') . $file->getClientOriginalName();
-            $file->move(public_path('upload/admin_image'), $fileName);
+            $file->move(public_path('upload/admin_images'), $fileName);
             $model['profile_photo_path'] = $fileName;
         }
 
@@ -56,7 +60,7 @@ class AdminProfileController extends Controller
 
 
     public function AdminChangePassword()
-    {   
+    {
         return view('admin.admin_change_password');
     }
 
@@ -69,10 +73,11 @@ class AdminProfileController extends Controller
                 'password_confirmation' => 'required|min:8',
             ],
         );
-        $hasedPassword = Admin::find(1)->password;
+        $hashedPassword = Auth::user()->password;
+
         // dd($hasedPassword);
-        if (Hash::check($request->current_password, $hasedPassword)) {
-            $admin = Admin::find(1);
+        if (Hash::check($request->current_password, $hashedPassword)) {
+            $admin = Admin::find(Auth::id());
             $admin->password = Hash::make($request->password);
             $admin->save();
             // Auth::logout();
@@ -89,5 +94,4 @@ class AdminProfileController extends Controller
             return redirect()->back()->with($notification);
         }
     }
-    
 }
