@@ -98,11 +98,11 @@
                                         </ul>
                                     </li>
                                 </ul>
-                                <input class="search-field" name="search" placeholder="Search here..." />
-                                <!-- <a class="search-button" href="#"></a> -->
+                                <input class="search-field" name="search" id="advanced-search" placeholder="Search here..." onfocus="search_result_show()" onblur="search_result_hide()" />
                                 <button class="search-button" type="submit"></button>
                             </div>
                         </form>
+                        <div id="searchProducts"></div>
                     </div>
                     <!-- /.search-area -->
                     <!-- ============================================================= SEARCH AREA : END ============================================================= -->
@@ -175,13 +175,15 @@
                     <div class="navbar-collapse collapse" id="mc-horizontal-menu-collapse">
                         <div class="nav-outer">
                             <ul class="nav navbar-nav">
-                                <li class="active dropdown yamm-fw"> <a href="{{ url('/') }}" data-hover="dropdown" class="dropdown-toggle" data-toggle="dropdown">
+                                <li class="active dropdown yamm-fw">
+                                    <a href="{{ url('/') }}" data-hover="dropdown" class="dropdown-toggle" data-toggle="dropdown">
                                         @if (session()->get('language') == 'hindi')
                                         घर
                                         @else
                                         Home
                                         @endif
-                                    </a> </li>
+                                    </a>
+                                </li>
 
                                 <!--   // Get Category Table Data -->
                                 @php
@@ -320,3 +322,31 @@
     </div>
 
 </header>
+
+<style>
+    .search-area {
+        position: relative;
+    }
+
+    #searchProducts {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        background: #ffffff;
+        z-index: 999;
+        border-radius: 8px;
+        margin-top: 5px;
+    }
+</style>
+
+
+<script>
+    function search_result_hide() {
+        $("#searchProducts").slideUp();
+    }
+
+    function search_result_show() {
+        $("#searchProducts").slideDown();
+    }
+</script>

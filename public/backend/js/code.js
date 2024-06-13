@@ -21,7 +21,6 @@ $(function () {
 });
 
 // Confirm
-
 $(function () {
     $(document).on("click", "#confirm", function (e) {
         e.preventDefault();
@@ -45,7 +44,6 @@ $(function () {
 });
 
 // processing
-
 $(function () {
     $(document).on("click", "#processing", function (e) {
         e.preventDefault();
@@ -69,7 +67,6 @@ $(function () {
 });
 
 //picked
-
 $(function () {
     $(document).on("click", "#picked", function (e) {
         e.preventDefault();
@@ -93,7 +90,6 @@ $(function () {
 });
 
 // shipped
-
 $(function () {
     $(document).on("click", "#shipped", function (e) {
         e.preventDefault();
@@ -117,7 +113,6 @@ $(function () {
 });
 
 //delivered
-
 $(function () {
     $(document).on("click", "#delivered", function (e) {
         e.preventDefault();

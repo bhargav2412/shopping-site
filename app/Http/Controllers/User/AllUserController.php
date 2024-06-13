@@ -10,17 +10,14 @@ use Illuminate\Support\Facades\Auth;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 
-class AllUserController extends Controller
-{
-    public function MyOrders()
-    {
+class AllUserController extends Controller {
+    public function MyOrders() {
         $orders = Order::where('user_id', Auth::id())->orderBy('id', 'DESC')->get();
         return view('frontend.user.order.order_view', compact('orders'));
     } // end mehtod 
 
 
-    public function OrderDetails($order_id)
-    {
+    public function OrderDetails($order_id) {
         $order = Order::with('division', 'district', 'state', 'user')->where('id', $order_id)->where('user_id', Auth::id())->first();
 
         $orderItem = OrderItem::with('product')->where('order_id', $order_id)->orderBy('id', 'DESC')->get();
@@ -29,9 +26,7 @@ class AllUserController extends Controller
     } // end mehtod 
 
 
-    public function InvoiceDownload($order_id)
-    {
-
+    public function InvoiceDownload($order_id) {
         $order = Order::with('division', 'district', 'state', 'user')->where('id', $order_id)->where('user_id', Auth::id())->first();
 
         $orderItem = OrderItem::with('product')->where('order_id', $order_id)->orderBy('id', 'DESC')->get();
@@ -46,9 +41,7 @@ class AllUserController extends Controller
         return $pdf->download('invoice.pdf');
     } // end mehtod 
 
-    public function ReturnOrder(Request $request, $order_id)
-    {
-
+    public function ReturnOrder(Request $request, $order_id) {
         Order::findOrFail($order_id)->update([
             'return_date' => Carbon::now()->format('d F Y'),
             'return_reason' => $request->return_reason,
@@ -65,40 +58,28 @@ class AllUserController extends Controller
     } // end method 
 
 
-    public function ReturnOrderList()
-    {
+    public function ReturnOrderList() {
         $orders = Order::where('user_id', Auth::id())->where('return_reason', '!=', NULL)->orderBy('id', 'DESC')->get();
         return view('frontend.user.order.return_order_view', compact('orders'));
     } // end method 
 
-    public function CancelOrders()
-    {
+    public function CancelOrders() {
         $orders = Order::where('user_id', Auth::id())->where('status', 'cancel')->orderBy('id', 'DESC')->get();
         return view('frontend.user.order.cancel_order_view', compact('orders'));
     } // end method 
 
 
     ///////////// Order Traking ///////
-    public function OrderTraking(Request $request)
-    {
-
+    public function OrderTraking(Request $request) {
         $invoice = $request->code;
-
         $track = Order::where('invoice_no', $invoice)->first();
-
         if ($track) {
-
-            // echo "<pre>";
-            // print_r($track);
-
-            return view('frontend.tracking.track_order', compact('track'));
+            return view('frontend.track.track_order', compact('track'));
         } else {
-
             $notification = array(
                 'message' => 'Invoice Code Is Invalid',
                 'alert-type' => 'error'
             );
-
             return redirect()->back()->with($notification);
         }
     } // end mehtod 

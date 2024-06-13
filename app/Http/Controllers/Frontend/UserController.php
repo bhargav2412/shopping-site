@@ -8,15 +8,16 @@ use App\Models\Category;
 use App\Models\MultiImg;
 use App\Models\Product;
 use App\Models\Slider;
+use App\Models\SubCategory;
+use App\Models\SubSubCategory;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
-class UserController extends Controller
-{
-    public function index()
-    {
+class UserController extends Controller {
+
+    public function index() {
         $products = Product::where('status', 1)->orderBy('id', 'DESC')->limit(6)->get();
         $sliders = Slider::where('status', 1)->orderBy('id', 'DESC')->limit(3)->get();
         $categories = Category::orderBy('category_name_en', 'ASC')->get();
@@ -37,23 +38,19 @@ class UserController extends Controller
         return view('frontend.index', compact('categories', 'sliders', 'products', 'featured', 'hot_deals', 'special_offer', 'special_deals', 'skip_category_0', 'skip_product_0', 'skip_category_1', 'skip_product_1', 'skip_brand_1', 'skip_brand_product_1'));
     }
 
-    public function UserLogout()
-    {
+    public function UserLogout() {
         Auth::logout();
         return Redirect()->route('login');
     }
 
-    public function UserProfile()
-    {
+    public function UserProfile() {
         $id = Auth::user()->id;
         $user = User::find($id);
 
         return view('frontend.profile.user_profile', compact('user'));
     }
 
-    public function UserProfileStore(Request $request)
-    {
-
+    public function UserProfileStore(Request $request) {
         $data = User::find(Auth::user()->id);
         $data->name = $request->name;
         $data->email = $request->email;
@@ -77,16 +74,13 @@ class UserController extends Controller
         return redirect()->route('user.profile')->with($notification);
     }
 
-    public function UserChangePassword()
-    {
-
+    public function UserChangePassword() {
         $id = Auth::user()->id;
         $user = User::find($id);
         return view('frontend.profile.change_password', compact('user'));
     }
 
-    public function UserPasswordUpdate(Request $request)
-    {
+    public function UserPasswordUpdate(Request $request) {
         $validateData = $request->validate([
             'oldpassword' => 'required',
             'password' => 'required|confirmed',
@@ -104,8 +98,7 @@ class UserController extends Controller
         }
     }
 
-    public function ProductDetails($id, $slug)
-    {
+    public function ProductDetails($id, $slug) {
         $product = Product::findOrFail($id);
 
         $color_en = $product->product_color_en;
@@ -125,11 +118,13 @@ class UserController extends Controller
         $cat_id = $product->category_id;
         $relatedProduct = Product::where('category_id', $cat_id)->where('id', '!=', $id)->orderBy('id', 'DESC')->get();
 
+        // $breadcrumb = SubCategory::with('category')->where('id', $product->category_id)->get();
+
+
         return view('frontend.product.product_details', compact('product', 'multiImag', 'product_color_en', 'product_color_hin', 'product_size_en', 'product_size_hin', 'relatedProduct'));
     }
 
-    public function TagWiseProduct($tag)
-    {
+    public function TagWiseProduct($tag) {
         $products = Product::where('status', 1)->where('product_tags_en', $tag)->where('product_tags_hin', $tag)->orderBy('id', 'DESC')->paginate(3);
 
         $categories = Category::orderBy('category_name_en', 'ASC')->get();
@@ -138,24 +133,27 @@ class UserController extends Controller
     }
 
     // Subcategory wise data
-    public function SubCatWiseProduct($subcat_id, $slug)
-    {
+    public function SubCatWiseProduct($subcat_id, $slug) {
         $products = Product::where('status', 1)->where('subcategory_id', $subcat_id)->orderBy('id', 'DESC')->paginate(6);
         $categories = Category::orderBy('category_name_en', 'ASC')->get();
-        return view('frontend.product.subcategory_view', compact('products', 'categories'));
+
+        $breadcrumb = SubCategory::with('category')->where('id', $subcat_id)->get();
+
+        return view('frontend.product.subcategory_view', compact('products', 'categories', 'breadcrumb'));
     }
 
     // Sub-Subcategory wise data
-    public function SubSubCatWiseProduct($subsubcat_id, $slug)
-    {
+    public function SubSubCatWiseProduct($subsubcat_id, $slug) {
         $products = Product::where('status', 1)->where('subsubcategory_id', $subsubcat_id)->orderBy('id', 'DESC')->paginate(6);
         $categories = Category::orderBy('category_name_en', 'ASC')->get();
-        return view('frontend.product.sub_subcategory_view', compact('products', 'categories'));
+
+        $breadsubsubcat = SubSubCategory::with(['subcategory', 'category'])->where('id', $subsubcat_id)->get();
+
+        return view('frontend.product.sub_subcategory_view', compact('products', 'categories', 'breadsubsubcat'));
     }
 
     /// Product View With Ajax
-    public function ProductViewAjax($id)
-    {
+    public function ProductViewAjax($id) {
         $product = Product::with('category', 'brand')->findOrFail($id);
 
         $color = $product->product_color_en;
@@ -173,12 +171,19 @@ class UserController extends Controller
 
 
     // Product Seach 
-    public function ProductSearch(Request $request)
-    {
+    public function ProductSearch(Request $request) {
+        $request->validate(["search" => "required"]);
         $item = $request->search;
-        // echo $item;
         $categories = Category::orderBy('category_name_en', 'ASC')->get();
         $products = Product::where('product_name_en', 'LIKE', "%$item%")->get();
         return view('frontend.product.search', compact('products', 'categories'));
     }
+
+    ///// Advance Search Options 
+    public function AdvancedSearch(Request $request) {
+        $request->validate(["search" => "required"]);
+        $item = $request->search;
+        $products = Product::where('product_name_en', 'LIKE', "%$item%")->select('product_name_en', 'product_thambnail', 'selling_price', 'id', 'product_slug_en')->limit(5)->get();
+        return view('frontend.product.advanced_search', compact('products'));
+    } // end method 
 }

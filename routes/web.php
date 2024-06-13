@@ -392,6 +392,7 @@ Route::prefix('adminuserrole')->group(function () {
 /// Product Search Route 
 Route::post('/search', [UserController::class, 'ProductSearch'])->name('product.search');
 
-
+// Advance Search Routes 
+Route::post('/advanced-search', [UserController::class, 'AdvancedSearch']);
 
 require __DIR__ . '/auth.php';

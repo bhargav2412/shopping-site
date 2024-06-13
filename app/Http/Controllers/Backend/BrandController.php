@@ -8,16 +8,14 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Image;
 
-class BrandController extends Controller
-{
-    public function BrandView(){
+class BrandController extends Controller {
+    public function BrandView() {
         $brands = Brand::latest()->get();
 
-        return view('backend.brand.brand_view',compact('brands'));
+        return view('backend.brand.brand_view', compact('brands'));
     }
 
-    public function BrandStore(Request $request)
-    {
+    public function BrandStore(Request $request) {
         $request->validate([
             'brand_name_en' => 'required',
             'brand_name_hin' => 'required',
@@ -49,15 +47,13 @@ class BrandController extends Controller
         return redirect()->back()->with($notification);
     } // end method
 
-    public function BrandEdit($id)
-    {
+    public function BrandEdit($id) {
         $brand = Brand::findOrFail($id);
         return view('backend.brand.brand_edit', compact('brand'));
     }
 
 
-    public function BrandUpdate(Request $request)
-    {
+    public function BrandUpdate(Request $request) {
 
         $brand_id = $request->id;
         $old_img = $request->old_image;
@@ -104,8 +100,7 @@ class BrandController extends Controller
 
 
 
-    public function BrandDelete($id)
-    {
+    public function BrandDelete($id) {
         $brand = Brand::findOrFail($id);
         $img = $brand->brand_image;
         unlink($img);
